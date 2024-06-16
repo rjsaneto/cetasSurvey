@@ -1,4 +1,6 @@
-#Função para criar códigos da coluna arquivo
+#'Função para criar códigos da coluna arquivo
+
+#'@export
 crieCodigo<-function(char,patterns=c(".xls",".tsv")){
   temp<-char
   for(i in 1:length(patterns)){

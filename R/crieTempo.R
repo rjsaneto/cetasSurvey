@@ -1,4 +1,6 @@
-#Função para transformar tempo em variável numérica
+#'Função para transformar tempo em variável numérica
+
+#'@export
 crieTempo<-function(data,split=NULL,m=2,a=1){
   if(is.null(split)){
     split="-"
