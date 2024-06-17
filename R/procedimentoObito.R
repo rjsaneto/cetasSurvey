@@ -1,19 +1,26 @@
-computeObito<-function(dadosO){
-  dados<-dadosO
-  dados$obcat<-"não"
+computeSaidas<-function(dadosO){
+  dados<-NULL
+  nomes<-c("transf","soltura","obito","fuga","outro")
   for(i in 1:nrow(dadosO)){
-    if(dados$obito[i]>0){
-      if(dados$O.F.O.[i]>0 | dados$t.s.ofo[i]>0){
-        temp<-dados[i,]
-        dados$obito[i]<-0
+    teste<-dadosO[i,nomes]
+    temp<-dadosO[i,]
+    if(length(teste[teste>0])>1){
+      quais<-which(teste>0)
+      temp[nomes[quais]]<-0
+      for(j in 1:length(quais)){
         dados<-rbind(dados,temp)
-        dados$O.F.O.[nrow(dados)]<-0
-        dados$t.s.ofo[nrow(dados)]<-0
-        dados$obcat[nrow(dados)]<-"sim"
-      }else{
-        dados$obcat[i]<-"sim"
+        dados[nrow(dados),nomes[quais[j]]]<-teste[quais[j]]
       }
+    }else{
+      dados<-rbind(dados,temp)
     }
   }
+  dados$obcat<-"não"
+  dados$obcat[dados$obito>0]<-"sim"
+  dados$t.s<-dados$transf+dados$soltura
+  dados$O.F.O.<-dados$obito+dados$fuga+dados$outro
+  dados$t.s.ofo<-dados$t.s+dados$O.F.O.
+  dados$t.s.ob<-dados$obito+dados$t.s
   return(dados)
 }
+
