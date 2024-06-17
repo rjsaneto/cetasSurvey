@@ -27,7 +27,11 @@ geoloc<-function(dados,codigo_municipio = "BA",ano = 2022,coluna,retiraZeros=T){
   }
 
   #Carregamento do mata no geobr e comparação dos nomes dos municípios
-  mapa<-read_municipality(code_muni = codigo_municipio,year = ano)
+  mapa<-NULL
+  for(i in 1:length(codigo_municipio)){
+    mapa<-rbind(mapa,read_municipality(code_muni = codigo_municipio[i],year = ano))
+
+  }
   nomes<-sort(unique(dados$Destino))
   nomesFora<-setdiff(nomes,mapa$name_muni) #nomes não encontrados
   emComum<-intersect(nomes,mapa$name_muni) #nomes em comum que serao usados
@@ -82,7 +86,7 @@ geoloc<-function(dados,codigo_municipio = "BA",ano = 2022,coluna,retiraZeros=T){
       mapa[,novo]<-0
       for(k in 1:length(emComum)){
         quantos<-sum(temp$TOTAL[which(temp$Destino==emComum[k])])
-        mapa[mapa$name_muni==emComum[k],novo]<-as.numeric(mapa[mapa$name_muni==emComum[k],novo])[1]+quantos
+        mapa[(mapa$name_muni==emComum[k])&(mapa$abbrev_state==unique(temp$UF[temp$Destino==emComum[k]&!is.na(temp$Destino)])),novo]<-as.numeric(mapa[(mapa$name_muni==emComum[k])&(mapa$abbrev_state==unique(temp$UF[temp$Destino==emComum[k]&!is.na(temp$Destino)])),novo])[1]+quantos
       }
     }
 
