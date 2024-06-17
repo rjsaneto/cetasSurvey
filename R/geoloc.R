@@ -17,7 +17,7 @@ geoloc<-function(dados,codigo_municipio = "BA",ano = 2022,coluna,retiraZeros=T){
   vamos<-try(library(gtools),silent = T)
   if(!is.null(attributes(vamos))){
     cat(paste("Instalando Pacote gtools\n"))
-    install.packages(gtools)
+    install.packages("gtools")
     library(gtools)
   }
 
